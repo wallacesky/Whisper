@@ -78,6 +78,18 @@ open class ShoutView: UIView {
     return gesture
     }()
 
+  public var index: Int {
+    get {
+      var selfIndex = 0
+      for (index, v) in shoutViews.enumerate() {
+        if v == self {
+          selfIndex = index
+        }
+      }
+      return selfIndex
+    }
+  }
+
   open fileprivate(set) var announcement: Announcement?
   open fileprivate(set) var displayTimer = Timer()
   open fileprivate(set) var panGestureActive = false
@@ -194,20 +206,9 @@ open class ShoutView: UIView {
   // MARK: - Actions
 
   open func silent() {
-    func getSelfIndex() -> Int {
-        var selfIndex = 0
-        for (index, v) in shoutViews.enumerate() {
-            if v == self {
-                selfIndex = index
-            }
-        }
-        
-        return selfIndex
-    }
-
     UIView.animate(withDuration: 0.35, animations: {
         for (index, v) in shoutViews.enumerate() {
-            if index > getSelfIndex() {
+            if index > self.index {
                 v.frame.origin.y -= self.frame.size.height
             }
         }
@@ -217,7 +218,7 @@ open class ShoutView: UIView {
         self.completion?()
         self.displayTimer.invalidate()
         self.removeFromSuperview()
-        shoutViews.removeAtIndex(getSelfIndex())
+        shoutViews.removeAtIndex(self.index)
     })
   }
 
@@ -240,6 +241,7 @@ open class ShoutView: UIView {
   
   @objc private func handlePanGestureRecognizer() {
     let translation = panGestureRecognizer.translation(in: self)
+    let originHeight = frame.size.height
     var duration: TimeInterval = 0
 
     if panGestureRecognizer.state == .began {
@@ -272,6 +274,11 @@ open class ShoutView: UIView {
     UIView.animate(withDuration: duration, animations: {
       self.backgroundView.frame.size.height = self.frame.height
       self.indicatorView.frame.origin.y = self.frame.height - Dimensions.indicatorHeight - 5
+      for (index, v) in shoutViews.enumerate() {
+        if index > self.index {
+            v.frame.origin.y += self.frame.size.height - originHeight
+        }
+      }
     })
   }
 
