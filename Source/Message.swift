@@ -19,12 +19,14 @@ public struct Announcement {
 
   public var title: String
   public var subtitle: String?
+  public var titleFont: UIFont
   public var image: UIImage?
   public var duration: TimeInterval
   public var action: (() -> Void)?
 
-  public init(title: String, subtitle: String? = nil, image: UIImage? = nil, duration: TimeInterval = 2, action: (() -> Void)? = nil) {
+  public init(title: String, titleFont: UIFont = FontList.Shout.title, subtitle: String? = nil, image: UIImage? = nil, duration: TimeInterval = 2, action: (() -> Void)? = nil) {
     self.title = title
+    self.titleFont = titleFont
     self.subtitle = subtitle
     self.image = image
     self.duration = duration
