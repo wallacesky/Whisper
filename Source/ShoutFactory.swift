@@ -81,7 +81,7 @@ open class ShoutView: UIView {
   public var index: Int {
     get {
       var selfIndex = 0
-      for (index, v) in shoutViews.enumerate() {
+      for (index, v) in shoutViews.enumerated() {
         if v == self {
           selfIndex = index
         }
@@ -207,7 +207,7 @@ open class ShoutView: UIView {
 
   open func silent() {
     UIView.animate(withDuration: 0.35, animations: {
-        for (index, v) in shoutViews.enumerate() {
+        for (index, v) in shoutViews.enumerated() {
             if index > self.index {
                 v.frame.origin.y -= self.frame.size.height
             }
@@ -218,7 +218,7 @@ open class ShoutView: UIView {
         self.completion?()
         self.displayTimer.invalidate()
         self.removeFromSuperview()
-        shoutViews.removeAtIndex(self.index)
+        shoutViews.remove(at: self.index)
     })
   }
 
@@ -274,7 +274,7 @@ open class ShoutView: UIView {
     UIView.animate(withDuration: duration, animations: {
       self.backgroundView.frame.size.height = self.frame.height
       self.indicatorView.frame.origin.y = self.frame.height - Dimensions.indicatorHeight - 5
-      for (index, v) in shoutViews.enumerate() {
+      for (index, v) in shoutViews.enumerated() {
         if index > self.index {
             v.frame.origin.y += self.frame.size.height - originHeight
         }
